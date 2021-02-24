@@ -1,15 +1,13 @@
 dist: xenial # Ubuntu 16.04
 language: bash
-env:
-  - tf_version=v0.14.0
 branches:
 only:
   - main
 before_install:
-  - wget https://releases.hashicorp.com/terraform/"$tf_version"/terraform_"$tf_version"_linux_amd64.zip
-  - unzip terraform_"$tf_version"_linux_amd64.zip
+  - wget https://releases.hashicorp.com/terraform/0.14.0/terraform_0.14.0_linux_amd64.zip
+  - unzip terraform_terraform_0.14.0_linux_amd64.zip
   - sudo mv terraform /usr/local/bin/
-  - rm terraform_"$tf_version"_linux_amd64.zip
+  - rm terraform_terraform_0.14.0_linux_amd64.zip
 jobs:
   include:
     - stage: terraform plan
@@ -17,13 +15,13 @@ jobs:
       if: type IN (pull_request)
       script:
         - echo "Executing Terraform Plan on pull request code"
-        - terraform init $tf_init_cli_options
-        - terraform validate $tf_validation_cli_options
-        - terraform plan $tf_plan_cli_options
+        - terraform init 
+        - terraform validate 
+        - terraform plan 
     - stage: terraform apply
       # Only run terraform apply stage if outside of a pull request
       if: type IN (push) and branch = main
       script:
         - echo "Executing Terraform Apply on merged code"
-        - terraform init $tf_init_cli_options
-        - terraform apply $tf_apply_cli_options
+        - terraform init 
+        - terraform apply
