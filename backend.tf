@@ -54,3 +54,25 @@ resource "aws_s3_bucket_policy" "terraform_state" {
 }
 EOF
 }
+resource "aws_s3_bucket" "wordpress" {
+  bucket = "morfall-creds"
+  force_destroy = true
+  server_side_encryption_configuration {
+    rule {
+      apply_server_side_encryption_by_default {
+        sse_algorithm = "AES256"
+      }
+    }
+  }
+
+  tags =  "Project" = "eks"
+}
+
+## S3 Bucket Public Access Block
+resource "aws_s3_bucket_public_access_block" "wordpress" {
+  bucket = aws_s3_bucket.wordpress.id
+  block_public_acls = false
+  block_public_policy = false
+  ignore_public_acls = true
+  restrict_public_buckets = false
+}
