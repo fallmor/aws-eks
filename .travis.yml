@@ -1,7 +1,7 @@
 dist: xenial # Ubuntu 16.04
 language: bash
 env:
-  - tf_version=v0.14.0 tf_init_cli_options="-input=false" tf_validation_cli_options="" tf_plan_cli_options="-lock=true -input=false" tf_apply_cli_options="-auto-approve -input=false"
+  - tf_version=v0.14.0
 branches:
 only:
   - main
