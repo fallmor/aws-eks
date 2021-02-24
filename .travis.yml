@@ -5,7 +5,7 @@ only:
   - main
 before_install:
   - wget https://releases.hashicorp.com/terraform/0.14.0/terraform_0.14.0_linux_amd64.zip
-  - unzip terraform_terraform_0.14.0_linux_amd64.zip
+  - unzip terraform_0.14.0_linux_amd64.zip
   - sudo mv terraform /usr/local/bin/
   - rm terraform_terraform_0.14.0_linux_amd64.zip
 jobs:
