@@ -191,7 +191,7 @@ module "my-cluster" {
       spot_price          = "0.199"
       instance_type = "t3.micro"
       root_volume_type = "gp2"
-      asg_desired_capacity = var.env == "prod" ? 3 : 0
+      asg_desired_capacity = var.env == "prod" ? 2 : 0
       kubelet_extra_args  = "--node-labels=node.kubernetes.io/lifecycle=spot"
       asg_max_size  = 4
       additional_security_group_ids = [aws_security_group.eks-secgroup.id]
