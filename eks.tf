@@ -195,21 +195,10 @@ module "my-cluster" {
       kubelet_extra_args  = "--node-labels=node.kubernetes.io/lifecycle=spot"
       asg_max_size  = 4
       additional_security_group_ids = [aws_security_group.eks-secgroup.id]
-      workers_user_data = <<-EOF
-            #!/bin/bash -ex
-            exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
-            curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 > get_helm.sh
-            chmod 700 get_helm.sh
-            ./get_helm.sh
-            kubectl create ns	wordpress-cwi   
-            helm -n wordpress-cwi install understood-zebu bitnami/wordpress  
-            sleep 30
-            export SERVICE_IP=$(kubectl get svc --namespace wordpress-cwi understood-zebu-wordpress --template "{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}") 
-            echo "WordPress URL: http://$SERVICE_IP/" 
-            echo "WordPress Admin URL: http://$SERVICE_IP/admin" 
-            echo Username: user 
-            echo Password: $(kubectl get secret --namespace wordpress-cwi understood-zebu-wordpress -o jsonpath="{.data.wordpress-password}" | base64 --decode) | tee -a /dev/tty
-EOF
+      user_data = base64encode(templatefile("${path.module}/files/data.sh", {
+   # dynamodb resource doesn't return name....
+      S3_BUCKET_NAME = aws_s3_bucket.wordpress.id
+  }))
  
     }
   ]
